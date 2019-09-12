@@ -43,6 +43,10 @@ If you called wait() you have to call continue() at some point.
 
 Same as `guard.continue()` but decrements in the same tick.
 
+#### `const cont = guard.waitAndContinue()`
+
+Calls wait and returns a function that when called calls continue() once no matter how many times it is called.
+
 #### `guard.ready(fn)`
 
 Pass a function that is called when the wait counter is `0`.

@@ -18,6 +18,17 @@ module.exports = class Nanoguard {
     if (cb) cb(err, val)
   }
 
+  waitAndContinue () {
+    let once = false
+    this.wait()
+    return () => {
+      if (once) return false
+      once = true
+      this.continue()
+      return true
+    }
+  }
+
   continueSync (cb, err, val) {
     if (--this._tick) return
     while (this._fns !== null && this._fns.length) this._fns.pop()()
