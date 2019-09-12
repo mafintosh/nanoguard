@@ -1,6 +1,6 @@
 {
   "name": "nanoguard",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Small module that allows you to guard a call to a function.",
   "main": "index.js",
   "dependencies": {},
