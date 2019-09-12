@@ -65,3 +65,19 @@ tape('multiple ready and wait and then resume', function (t) {
   t.same(ready, 2)
   t.end()
 })
+
+tape('wait and continue', function (t) {
+  const g = new Nanoguard()
+
+  const continueOnce = g.waitAndContinue()
+
+  g.ready(function () {
+    t.pass('continued')
+    t.end()
+  })
+
+  continueOnce()
+  continueOnce()
+  continueOnce()
+  continueOnce()
+})
