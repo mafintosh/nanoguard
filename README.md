@@ -35,9 +35,13 @@ Non-owners of the guard can use this to defer the ready function of the guard ow
 
 #### `guard.continue()`
 
-Decrement the wait counter. If the counter is `0` it calls all pending
+Decrement the wait counter on the next tick. If the counter is `0` it calls all pending
 ready functions.
 If you called wait() you have to call continue() at some point.
+
+#### `guard.continueSync()`
+
+Same as `guard.continue()` but decrements in the same tick.
 
 #### `guard.ready(fn)`
 

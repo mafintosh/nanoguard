@@ -13,6 +13,12 @@ module.exports = class Nanoguard {
   }
 
   continue (cb, err, val) {
+    if (this._tick === 1) process.nextTick(continueNT, this)
+    else this._tick--
+    if (cb) cb(err, val)
+  }
+
+  continueSync (cb, err, val) {
     if (--this._tick) return
     while (this._fns !== null && this._fns.length) this._fns.pop()()
     if (cb) cb(err, val)
@@ -29,4 +35,8 @@ module.exports = class Nanoguard {
     if (this._fns === null || this._tick === 0) fn()
     else this._fns.push(fn)
   }
+}
+
+function continueNT (guard) {
+  guard.continueSync()
 }
