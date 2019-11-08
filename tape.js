@@ -10,6 +10,22 @@ tape('basic', function (t) {
   })
 })
 
+tape('waiting', function (t) {
+  const g = new Nanoguard()
+
+  t.equals(g.waiting, false, 'not waiting')
+  g.wait()
+  t.equals(g.waiting, true, 'waiting')
+  g.wait()
+  t.equals(g.waiting, true, 'waiting')
+  g.continueSync()
+  t.equals(g.waiting, true, 'waiting')
+  g.continueSync()
+  t.equals(g.waiting, false, 'not waiting')
+
+  t.end()
+})
+
 tape('resume next tick', function (t) {
   const g = new Nanoguard()
 
