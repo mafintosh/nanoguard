@@ -5,7 +5,7 @@ module.exports = class Nanoguard {
   }
 
   get waiting () {
-    return this._tick === 0 || this._fns === null
+    return this._tick > 0
   }
 
   wait () {
