@@ -2,10 +2,16 @@ module.exports = class Nanoguard {
   constructor () {
     this._tick = 0
     this._fns = []
+    this._dep = null
   }
 
   get waiting () {
     return this._tick > 0
+  }
+
+  depend (dep) {
+    if (this._dep !== null) throw new Error('Can only depend on one other guard currently')
+    this._dep = dep
   }
 
   wait () {
@@ -31,7 +37,11 @@ module.exports = class Nanoguard {
 
   continueSync (cb, err, val) {
     if (--this._tick) return
-    while (this._fns !== null && this._fns.length) this._fns.pop()()
+    while (this._fns !== null && this._fns.length) {
+      const fn = this._fns.pop()
+      if (this._dep === null) fn()
+      else this._dep.ready(fn)
+    }
     if (cb) cb(err, val)
   }
 
