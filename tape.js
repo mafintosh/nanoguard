@@ -97,3 +97,33 @@ tape('wait and continue', function (t) {
   continueOnce()
   continueOnce()
 })
+
+tape('depend', function (t) {
+  const g = new Nanoguard()
+  const o = new Nanoguard()
+
+  let ready = false
+
+  g.depend(o)
+  g.wait()
+
+  g.ready(function () {
+    t.ok(ready)
+
+    ready = false
+    o.wait()
+
+    g.ready(function () {
+      t.ok(ready)
+      t.end()
+    })
+
+    setImmediate(function () {
+      ready = true
+      o.continueSync()
+    })
+  })
+
+  ready = true
+  g.continueSync()
+})
