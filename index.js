@@ -37,11 +37,7 @@ module.exports = class Nanoguard {
 
   continueSync (cb, err, val) {
     if (--this._tick) return
-    while (this._fns !== null && this._fns.length) {
-      const fn = this._fns.pop()
-      if (this._dep === null) fn()
-      else this._dep.ready(fn)
-    }
+    while (this._fns !== null && this._fns.length) this._ready(this._fns.pop())
     if (cb) cb(err, val)
   }
 
@@ -53,8 +49,13 @@ module.exports = class Nanoguard {
   }
 
   ready (fn) {
-    if (this._fns === null || this._tick === 0) fn()
+    if (this._fns === null || this._tick === 0) this._ready(fn)
     else this._fns.push(fn)
+  }
+
+  _ready (fn) {
+    if (this._dep === null) fn()
+    else this._dep.ready(fn)
   }
 }
 
